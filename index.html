@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta charset="utf-8">
+	<title>Pokémon Odyssey Teambuilder</title>
+
+	<link rel="stylesheet" href="main.css">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta property="og:title" content="Pokémon Odyssey Teambuilder">
+
+	<script defer="defer" src="data.js"></script>
+	<script defer="defer" src="type-chart.js"></script>
+	<script defer="defer" src="abilities.js"></script>
+	<script defer="defer" src="main.js"></script>
+</head>
+
+<body>
+	<main class="grid-container">
+		<h1 class="text-center">Pokémon Odyssey Teambuilder</h1>
+
+		<div class="explainations">
+			This tool is a teambuilder, that can be used to check weaknesses and resistances of your team in <a
+				href="https://www.pokecommunity.com/threads/pok%C3%A9mon-odyssey-complete-v4-1.488536/"
+				target="_blank">Pokémon Odyssey</a>. You can also check offensive type coverage <a
+				href="https://nterrien.github.io/pkmn-odyssey-type-coverage/" target="_blank">here</a>.
+
+			This tool is inspired by <a href="https://marriland.com/tools/team-builder/en/" target="_blank">Marriland's
+				Pokémon Team Builder</a>.
+		</div>
+
+		<div class="team">
+			<div class="pokemon-card" id="pokemon-0">
+				<div class="sprite"></div>
+				Pokémon 1:
+				<input type="text" name="pokemonName0" value="" list="pokemon-names"
+					onkeydown="keydownFunction(event,0)" onfocusout="choosePokemon(0)">
+				<div class="ability"></div>
+				<div class="types"></div>
+			</div>
+			<div class="pokemon-card" id="pokemon-1">
+				<div class="sprite"></div>
+				Pokémon 2:
+				<input type="text" name="pokemonName1" value="" list="pokemon-names"
+					onkeydown="keydownFunction(event,1)" onfocusout="choosePokemon(1)">
+				<div class="ability"></div>
+				<div class="types"></div>
+			</div>
+			<div class="pokemon-card" id="pokemon-2">
+				<div class="sprite"></div>
+				Pokémon 3:
+				<input type="text" name="pokemonName2" value="" list="pokemon-names"
+					onkeydown="keydownFunction(event,2)" onfocusout="choosePokemon(2)">
+				<div class="ability"></div>
+				<div class="types"></div>
+			</div>
+			<div class="pokemon-card" id="pokemon-3">
+				<div class="sprite"></div>
+				Pokémon 4:
+				<input type="text" name="pokemonName3" value="" list="pokemon-names"
+					onkeydown="keydownFunction(event,3)" onfocusout="choosePokemon(3)">
+				<div class="ability"></div>
+				<div class="types"></div>
+			</div>
+			<div class="pokemon-card" id="pokemon-4">
+				<div class="sprite"></div>
+				Pokémon 5:
+				<input type="text" name="pokemonName4" value="" list="pokemon-names"
+					onkeydown="keydownFunction(event,4)" onfocusout="choosePokemon(4)">
+				<div class="ability"></div>
+				<div class="types"></div>
+			</div>
+			<div class="pokemon-card" id="pokemon-5">
+				<div class="sprite"></div>
+				Pokémon 6:
+				<input type="text" name="pokemonName5" value="" list="pokemon-names"
+					onkeydown="keydownFunction(event,5)" onfocusout="choosePokemon(5)">
+				<div class="ability"></div>
+				<div class="types"></div>
+			</div>
+		</div>
+
+		<div class="table-container">
+			<div class="table-title">Defensive Coverage</div>
+			<table id="table">
+			</table>
+		</div>
+	</main>
+</body>
+
+<footer>
+	<div>Images and names of Pokémon are the property of Game Freak. Sprites of Etrian-pokémon are made by the Yggdrasil
+		Project.</div>
+	<a href="https://github.com/nterrien/pkmn-odyssey-teambuilder">Project page on Github</a>
+</footer>
+
+</html>
+
+<datalist id="pokemon-names"></datalist>
