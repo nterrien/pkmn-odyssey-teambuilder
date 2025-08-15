@@ -210,6 +210,10 @@ function findPokemonFromInput(name) {
     }
     return ""
 }
+function removePokemon(index){
+    resetPokemonInfo(index)
+    constructTable()
+}
 function resetPokemonInfo(index) {
     input = document.getElementsByName("pokemonName" + index)[0]
     input.value = ""
