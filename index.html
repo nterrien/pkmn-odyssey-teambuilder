@@ -31,12 +31,50 @@
 				Pokémon Team Builder</a>.
 		</div>
 
+		<div class="search">
+			<button style="margin: auto;" onclick="toggleAdvancedSearch()">Toggle Advanced Search</button>
+			<div id="advanced-search" class="hide ">
+				<div class="options">
+					<div>
+						Types:
+						<input type="text" id="type1" value="" list="types-list"
+							onkeydown="enterDownFunction(event,function (){startAdvancedSearch()})"
+							onfocusout="startAdvancedSearch()">
+						<input type="text" id="type2" value="" list="types-list"
+							onkeydown="enterDownFunction(event,function (){startAdvancedSearch()})"
+							onfocusout="startAdvancedSearch()">
+					</div>
+					<div>
+						Ability:
+						<input type="text" id="ability-field" value="" placeholder="Double click to see the list"
+							list="abilities-list"
+							onkeydown="enterDownFunction(event,function (){startAdvancedSearch()})"
+							onfocusout="startAdvancedSearch()">
+					</div>
+					<div>
+						Region:
+						<input type="text" id="region" value="" list="regions-list"
+							onkeydown="enterDownFunction(event,function (){startAdvancedSearch()})"
+							onfocusout="startAdvancedSearch()">
+					</div>
+					<div>
+						Fully Evolved
+						<input type="checkbox" id="final-evo" checked onchange="startAdvancedSearch()">
+					</div> 
+					<button  onclick="resetAdvancedSearch()">Reset</button>
+				</div>
+				<div id="search-result">
+
+				</div>
+			</div>
+		</div>
+
 		<div class="team">
 			<div class="pokemon-card" id="pokemon-0">
 				<div class="sprite"></div>
 				Pokémon 1:
 				<input type="text" name="pokemonName0" value="" list="pokemon-names"
-					onkeydown="keydownFunction(event,0)" onfocusout="choosePokemon(0)">
+					onkeydown="enterDownFunction(event,function (){choosePokemon(0)})" onfocusout="choosePokemon(0)">
 				<div class="ability"></div>
 				<div class="types"></div>
 			</div>
@@ -44,7 +82,7 @@
 				<div class="sprite"></div>
 				Pokémon 2:
 				<input type="text" name="pokemonName1" value="" list="pokemon-names"
-					onkeydown="keydownFunction(event,1)" onfocusout="choosePokemon(1)">
+					onkeydown="enterDownFunction(event,function (){choosePokemon(1)})" onfocusout="choosePokemon(1)">
 				<div class="ability"></div>
 				<div class="types"></div>
 			</div>
@@ -52,7 +90,7 @@
 				<div class="sprite"></div>
 				Pokémon 3:
 				<input type="text" name="pokemonName2" value="" list="pokemon-names"
-					onkeydown="keydownFunction(event,2)" onfocusout="choosePokemon(2)">
+					onkeydown="enterDownFunction(event,function (){choosePokemon(2)})" onfocusout="choosePokemon(2)">
 				<div class="ability"></div>
 				<div class="types"></div>
 			</div>
@@ -60,7 +98,7 @@
 				<div class="sprite"></div>
 				Pokémon 4:
 				<input type="text" name="pokemonName3" value="" list="pokemon-names"
-					onkeydown="keydownFunction(event,3)" onfocusout="choosePokemon(3)">
+					onkeydown="enterDownFunction(event,function (){choosePokemon(3)})" onfocusout="choosePokemon(3)">
 				<div class="ability"></div>
 				<div class="types"></div>
 			</div>
@@ -68,7 +106,7 @@
 				<div class="sprite"></div>
 				Pokémon 5:
 				<input type="text" name="pokemonName4" value="" list="pokemon-names"
-					onkeydown="keydownFunction(event,4)" onfocusout="choosePokemon(4)">
+					onkeydown="enterDownFunction(event,function (){choosePokemon(4)})" onfocusout="choosePokemon(4)">
 				<div class="ability"></div>
 				<div class="types"></div>
 			</div>
@@ -76,7 +114,7 @@
 				<div class="sprite"></div>
 				Pokémon 6:
 				<input type="text" name="pokemonName5" value="" list="pokemon-names"
-					onkeydown="keydownFunction(event,5)" onfocusout="choosePokemon(5)">
+					onkeydown="enterDownFunction(event,function (){choosePokemon(5)})" onfocusout="choosePokemon(5)">
 				<div class="ability"></div>
 				<div class="types"></div>
 			</div>
@@ -90,8 +128,12 @@
 
 		<div class="paste">
 			<div class="text-center">
-				<button class="button-paste tooltip" onclick="importPaste()">Import<span class='tooltiptext'>Import a team from a pokepaste-like text</span></button>
-				<button class="button-paste tooltip" onclick="exportPaste()">Export<span class='tooltiptext'>Export selected Pokémons in a pokepaste-like format</span></button>
+				<button class="tooltip" onclick="importPaste()">Import
+					<span class='tooltiptext'>Import a team from a pokepaste-like text</span>
+				</button>
+				<button class="tooltip" onclick="exportPaste()">Export
+					<span class='tooltiptext'>Export selected Pokémons in a pokepaste-like format</span>
+				</button>
 			</div>
 			<div id="log" class="text-center"></div>
 			<textarea id="paste-field" placeholder="Import paste here"></textarea>
@@ -108,3 +150,6 @@
 </html>
 
 <datalist id="pokemon-names"></datalist>
+<datalist id="types-list"></datalist>
+<datalist id="abilities-list"></datalist>
+<datalist id="regions-list"></datalist>

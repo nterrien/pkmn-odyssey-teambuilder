@@ -18,16 +18,109 @@ function onDelegatedEvent(e, t, n, o, l) {
 // From https://stackoverflow.com/a/35279162
 function levenshtein(s, t) { if (s === t) { return 0 } var n = s.length, m = t.length; if (n === 0 || m === 0) { return n + m } var x = 0, y, a, b, c, d, g, h, k; var p = [n]; for (y = 0; y < n;) { p[y] = ++y } for (; (x + 3) < m; x += 4) { var e1 = t.charCodeAt(x); var e2 = t.charCodeAt(x + 1); var e3 = t.charCodeAt(x + 2); var e4 = t.charCodeAt(x + 3); c = x; b = x + 1; d = x + 2; g = x + 3; h = x + 4; for (y = 0; y < n; y += 1) { k = s.charCodeAt(y); a = p[y]; if (a < c || b < c) { c = (a > b ? b + 1 : a + 1) } else { if (e1 !== k) { c += 1 } } if (c < b || d < b) { b = (c > d ? d + 1 : c + 1) } else { if (e2 !== k) { b += 1 } } if (b < d || g < d) { d = (b > g ? g + 1 : b + 1) } else { if (e3 !== k) { d += 1 } } if (d < g || h < g) { g = (d > h ? h + 1 : d + 1) } else { if (e4 !== k) { g += 1 } } p[y] = h = g; g = d; d = b; b = c; c = a } } for (; x < m;) { var e = t.charCodeAt(x); c = x; d = ++x; for (y = 0; y < n; y += 1) { a = p[y]; if (a < c || d < c) { d = (a > d ? d + 1 : a + 1) } else { if (e !== s.charCodeAt(y)) { d = c + 1 } else { d = c } } p[y] = d; c = a } h = d } return h }
 
-// Fill pokemon name list
+// Fill data lists
 pkmnNames = document.getElementById("pokemon-names")
 pokemons.forEach(pkmn => {
     var option = document.createElement('option');
     option.value = pkmn.name;
     pkmnNames.appendChild(option);
 });
+typeList = Object.keys(typeTable)
+typesListElement = document.getElementById("types-list")
+typeList.forEach(t => {
+    var option = document.createElement('option');
+    option.value = t;
+    typesListElement.appendChild(option);
+});
+abilityList = [...new Set(pokemons.flatMap(pkmn => pkmn.abilities))].sort()
+abilityListElement = document.getElementById("abilities-list")
+abilityList.forEach(a => {
+    var option = document.createElement('option');
+    option.value = a;
+    abilityListElement.appendChild(option);
+});
+regionList = [...new Set(pokemons.flatMap(pkmn => pkmn.regional))].sort().filter(r => r)
+regionListElement = document.getElementById("regions-list")
+regionList.forEach(a => {
+    var option = document.createElement('option');
+    option.value = a
+    regionListElement.appendChild(option);
+});
 
 // Team
 team = [{ species: {}, ability: 0 }, { species: {}, ability: 0 }, { species: {}, ability: 0 }, { species: {}, ability: 0 }, { species: {}, ability: 0 }, { species: {}, ability: 0 }]
+
+
+// Advanced search
+function toggleAdvancedSearch() {
+    div = document.getElementById("advanced-search")
+    if (div.classList.contains("hide")) {
+        div.classList.remove("hide")
+    } else {
+        div.classList.add("hide")
+    }
+}
+function resetAdvancedSearch() {
+    document.getElementById("type1").value = ""
+    document.getElementById("type2").value = ""
+    document.getElementById("ability-field").value = ""
+    document.getElementById("region").value = ""
+    document.getElementById("final-evo").checked = true
+    startAdvancedSearch()
+}
+
+function startAdvancedSearch() {
+    type1 = document.getElementById("type1").value
+    if (!typeList.includes(type1)) {
+        document.getElementById("type1").value = ""
+    }
+    type2 = document.getElementById("type2").value
+    if (!typeList.includes(type2)) {
+        document.getElementById("type2").value = ""
+    }
+    ability = document.getElementById("ability-field").value
+    if (!abilityList.includes(ability)) {
+        document.getElementById("ability-field").value = ""
+    }
+    region = document.getElementById("region").value
+    if (!regionList.includes(region)) {
+        document.getElementById("region").value = ""
+    }
+    finalEvo = document.getElementById("final-evo").checked
+    filteredPokemons = pokemons.filter(pkmn =>
+        (!typeList.includes(type1) || pkmn.types.includes(type1))
+        && (!typeList.includes(type2) || pkmn.types.includes(type2))
+        && (!abilityList.includes(ability) || pkmn.abilities.includes(ability))
+        && (!regionList.includes(region) || pkmn.regional == region)
+        && (!finalEvo || pkmn.final)
+    )
+    result = document.getElementById("search-result")
+    if (filteredPokemons.length > 0) {
+        result.innerHTML = filteredPokemons.map(pkmn => pkmnSearchCard(pkmn)).join(" ")
+    } else {
+        result.innerHTML = "<div class='text-center'>No result</div>"
+    }
+}
+
+function pkmnSearchCard(pkmn) {
+    res = "<span class='pkmn-result-card'>" + pokemonIcon(pkmn.name) + "<b class='name'>" + pkmn.name + "</b>"
+    res += '<span class="types">' + pkmn.types.map(t => typeIcon(t)).join(" ") + "</span>"
+    res += pkmn.abilities.join("/")
+    res += "<button class='btn-add' onclick='addPokemonFromSearch(" + JSON.stringify(pkmn) + ")'>+</button>"
+    res += "</span>"
+    return res
+}
+function addPokemonFromSearch(pkmn) {
+    console.log(team)
+    lastIndex = team.findIndex(pk => pk.species.name == undefined)
+    if (lastIndex == -1) { lastIndex = 5 }
+    team[lastIndex].species = pkmn
+    team[lastIndex].ability = 0
+    fillPokemonInfo(lastIndex, pkmn)
+    constructTable()
+}
+
+startAdvancedSearch()
 
 // Something is entered in a pokemon name field
 function choosePokemon(index) {
@@ -41,14 +134,14 @@ function choosePokemon(index) {
             team[index].species = pkmn
             team[index].ability = 0
             fillPokemonInfo(index, pkmn)
-            constructTable()
         }
     }
+    constructTable()
 }
-function keydownFunction(e, index) {
+function enterDownFunction(e, call) {
     var key = e.keyCode || e.which;
     if (key == 13) {
-        choosePokemon(index)
+        call()
     }
 }
 function findPokemonFromInput(name) {
@@ -67,7 +160,6 @@ function resetPokemonInfo(index) {
     div.querySelector(".ability").innerHTML = ""
     div.querySelector(".types").innerHTML = ""
     team[index].species = {}
-    constructTable()
 }
 function fillPokemonInfo(index, pkmn) {
     div = document.getElementById("pokemon-" + index)
@@ -86,7 +178,7 @@ function fillPokemonInfo(index, pkmn) {
     selectAbility.addEventListener("change", e => abilityChanged(e, index));
 }
 function typeIcon(t) {
-    return '<span class="type-icon type-' + t.toLowerCase() + '">' + t + '</span></span>'
+    return '<span class="type-icon type-' + t.toLowerCase() + '">' + t + '</span>'
 }
 function pokemonIcon(p) {
     return '<img width="48" height="48" alt="' + p + ' sprite" title="' + p + '" loading="lazy" src="./sprites/' + p + '.png"></img>'
@@ -103,7 +195,7 @@ function constructTable() {
     }
     table += "<th class='tooltip'>Total Weak<span class='tooltiptext'>Number of Pokémon that takes increased damage</span></th>"
     table += "<th class='tooltip'>Total Resist<span class='tooltiptext'>Number of Pokémon that takes decreased damage</span></th></thead><tbody>"
-    for (let t of Object.keys(typeTable)) {
+    for (let t of typeList) {
         table += "<tr><th>" + typeIcon(t) + "</th>"
         totalWeak = 0
         totalResist = 0
@@ -145,6 +237,7 @@ function constructTable() {
 
 constructTable()
 
+// Paste
 function importPaste() {
     paste = document.getElementById("paste-field").value.trim()
     index = 0
@@ -207,7 +300,6 @@ function importPaste() {
         log.innerHTML = "Import failed! You must paste a team in the field."
     }
 }
-
 function exportPaste() {
     paste = ""
     for (let pkmn of team) {
