@@ -87,6 +87,15 @@
 			<table id="table">
 			</table>
 		</div>
+
+		<div class="paste">
+			<div class="text-center">
+				<button class="button-paste tooltip" onclick="importPaste()">Import<span class='tooltiptext'>Import a team from a pokepaste-like text</span></button>
+				<button class="button-paste tooltip" onclick="exportPaste()">Export<span class='tooltiptext'>Export selected Pokémons in a pokepaste-like format</span></button>
+			</div>
+			<div id="log" class="text-center"></div>
+			<textarea id="paste-field" placeholder="Import paste here"></textarea>
+		</div>
 	</main>
 </body>
 

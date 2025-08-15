@@ -37,22 +37,10 @@ function choosePokemon(index) {
     if (enteredValue) {
         pkmnName = findPokemonFromInput(enteredValue)
         if (pkmnName.length > 0) {
-            input.value = pkmnName
             pkmn = pokemons.find(p => p.name == pkmnName)
             team[index].species = pkmn
             team[index].ability = 0
-            div = document.getElementById("pokemon-" + index)
-            div.querySelector(".sprite").innerHTML = pokemonIcon(pkmnName)
-            div.querySelector(".types").innerHTML = pkmn.types.map(t => typeIcon(t)).join(" ")
-            selectAbility = document.createElement('select');
-            pkmn.abilities.map((a, i) => {
-                var option = document.createElement('option');
-                option.value = i;
-                option.innerHTML = a;
-                selectAbility.appendChild(option);
-            })
-            div.querySelector(".ability").appendChild(selectAbility)
-            selectAbility.addEventListener("change", e => abilityChanged(e, index));
+            fillPokemonInfo(index, pkmn)
             constructTable()
         }
     }
@@ -81,6 +69,22 @@ function resetPokemonInfo(index) {
     team[index].species = {}
     constructTable()
 }
+function fillPokemonInfo(index, pkmn) {
+    div = document.getElementById("pokemon-" + index)
+    document.getElementsByName("pokemonName" + index)[0].value = pkmn.name
+    div.querySelector(".sprite").innerHTML = pokemonIcon(pkmn.name)
+    div.querySelector(".types").innerHTML = pkmn.types.map(t => typeIcon(t)).join(" ")
+    selectAbility = document.createElement('select');
+    pkmn.abilities.map((a, i) => {
+        var option = document.createElement('option');
+        option.value = i;
+        option.innerHTML = a;
+        selectAbility.appendChild(option);
+    })
+    div.querySelector(".ability").innerHTML = ""
+    div.querySelector(".ability").appendChild(selectAbility)
+    selectAbility.addEventListener("change", e => abilityChanged(e, index));
+}
 function typeIcon(t) {
     return '<span class="type-icon type-' + t.toLowerCase() + '">' + t + '</span></span>'
 }
@@ -97,7 +101,8 @@ function constructTable() {
     for (let pkmn of team) {
         table += "<th>" + (pkmn.species.name ? pokemonIcon(pkmn.species.name) : '') + "</th>"
     }
-    table += "<th>Total Weak</th><th>Total Resist</th></thead><tbody>"
+    table += "<th class='tooltip'>Total Weak<span class='tooltiptext'>Number of Pokémon that takes increased damage</span></th>"
+    table += "<th class='tooltip'>Total Resist<span class='tooltiptext'>Number of Pokémon that takes decreased damage</span></th></thead><tbody>"
     for (let t of Object.keys(typeTable)) {
         table += "<tr><th>" + typeIcon(t) + "</th>"
         totalWeak = 0
@@ -139,3 +144,83 @@ function constructTable() {
 }
 
 constructTable()
+
+function importPaste() {
+    paste = document.getElementById("paste-field").value.trim()
+    index = 0
+    firstLine = true
+    importedTeam = [{ species: {}, ability: 0 }, { species: {}, ability: 0 }, { species: {}, ability: 0 }, { species: {}, ability: 0 }, { species: {}, ability: 0 }, { species: {}, ability: 0 }]
+    errors = []
+    for (let line of paste.split("\n")) {
+        if (index > 5) {
+            break;
+        }
+        if (line.trim().length == 0) {
+            index += 1
+            firstLine = true
+        } else if (line.startsWith("Ability: ")) {
+            if (importedTeam[index].species.name) {
+                ability = line.split(":")[1].trim()
+                importedTeam[index].ability = importedTeam[index].species.abilities.findIndex(a => a.toLowerCase() == ability.toLowerCase())
+                if (importedTeam[index].ability == -1) {
+                    importedTeam[index].ability = 0
+                }
+            }
+        } else if (firstLine) {
+            firstLine = false
+            // In real pokepaste the format is nickname (species) @ item
+            pkmnName = line.split("@")[0].trim()
+            species = pokemons.find(pkmn => pkmn.name == pkmnName)
+            if (!species) {
+                // Nicknames. It can't be done by default because i named Battle Bond pokemon Plusle (Battle Bond). It could be rename Plusle-Battle-Bond
+                if (pkmnName.includes("(")) {
+                    pkmnName = pkmnName.split("(")[1].replace(")", "").trim()
+                    species = pokemons.find(pkmn => pkmn.name == pkmnName)
+                }
+            }
+            if (!species) {
+                // Error
+                errors.push("Pokémon " + (index + 1) + " ( " + pkmnName + " ) not found.")
+            } else {
+                importedTeam[index].species = species
+            }
+        }
+    }
+    log = document.getElementById("log")
+    if (paste.length > 0) {
+        team = importedTeam
+        for (let i = 0; i < 6; i++) {
+            if (team[i].species.name) {
+                fillPokemonInfo(i, team[i].species)
+            }
+            else {
+                resetPokemonInfo(i)
+            }
+        }
+        constructTable()
+        if (errors.length > 0) {
+            log.innerHTML = "Imported with errors : <br>" + errors.join("<br>")
+        } else {
+            log.innerHTML = "Successfully imported!"
+        }
+    } else {
+        log.innerHTML = "Import failed! You must paste a team in the field."
+    }
+}
+
+function exportPaste() {
+    paste = ""
+    for (let pkmn of team) {
+        if (pkmn.species.name) {
+            paste += pkmn.species.name + "\nAbility: " + pkmn.species.abilities[pkmn.ability] + "\n\n"
+        }
+    }
+    log = document.getElementById("log")
+    paste = paste.trim()
+    if (paste.length > 0) {
+        log.innerHTML = "Exported! Don't forget to save your team in a text file."
+        document.getElementById("paste-field").value = paste
+    } else {
+        log.innerHTML = "Nothing to export! You must select at least one Pokémon."
+    }
+}

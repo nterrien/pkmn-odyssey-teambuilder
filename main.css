@@ -280,9 +280,46 @@ tr:nth-child(odd)>td {
     color: white;
 }
 
+.paste {
+    margin: 30px;
+}
+
+.button-paste {
+    padding: 0.25rem .75rem;
+    font: inherit;
+    cursor: pointer;
+    border: 1px solid #c2c2c2;
+    border-radius: 4px;
+    color: #404040;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, .6);  margin: 0px 10px;
+}
+
+.button-paste:active {
+    outline: 0;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, .2)
+}
+
+.button-paste:focus {
+    outline: 0;
+    border-color: #a3a3a3;
+    background-color: #dbdbdb;
+}
+
+#log {
+    color: red;
+    min-height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#paste-field {
+    width: 100%;
+    min-height: 270px
+}
+
 .tooltip {
     position: relative;
-    display: inline-block;
 }
 
 .tooltip .tooltiptext {
