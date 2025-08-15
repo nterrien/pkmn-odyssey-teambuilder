@@ -52,6 +52,38 @@ team = [{ species: {}, ability: 0 }, { species: {}, ability: 0 }, { species: {},
 
 
 // Advanced search
+searchTypes = document.getElementById("search-resist")
+typeList.forEach(t => {
+    var div = document.createElement('div');
+    div.innerHTML = typeIcon(t)
+    div.classList.add("type-select")
+    var select = document.createElement('select');
+    select.id = "select" + t
+    var option = document.createElement('option');
+    option.value = 0
+    option.label = ""
+    select.appendChild(option)
+    var option = document.createElement('option');
+    option.value = 1
+    option.label = "Immune"
+    select.appendChild(option)
+    var option = document.createElement('option');
+    option.value = 2
+    option.label = "Resists"
+    select.appendChild(option)
+    var option = document.createElement('option');
+    option.value = 3
+    option.label = "Not Weak"
+    select.appendChild(option)
+    var option = document.createElement('option');
+    option.value = 4
+    option.label = "Weak"
+    select.appendChild(option)
+    select.addEventListener("change", e => startAdvancedSearch());
+    div.appendChild(select);
+    searchTypes.appendChild(div);
+})
+
 function toggleAdvancedSearch() {
     div = document.getElementById("advanced-search")
     if (div.classList.contains("hide")) {
@@ -66,6 +98,7 @@ function resetAdvancedSearch() {
     document.getElementById("ability-field").value = ""
     document.getElementById("region").value = ""
     document.getElementById("final-evo").checked = true
+    typeList.forEach(t => document.getElementById("select" + t).selectedIndex = 0)
     startAdvancedSearch()
 }
 
@@ -94,11 +127,35 @@ function startAdvancedSearch() {
         && (!regionList.includes(region) || pkmn.regional == region)
         && (!finalEvo || pkmn.final)
     )
+    typeList.forEach(t => {
+        sIndex = document.getElementById("select" + t).selectedIndex;
+        if (sIndex > 0) {
+            filteredPokemons = filteredPokemons.filter(pkmn => {
+                mult = pkmn.types.map(def => effectiveness(t, def)).reduce((x, y) => x * y, 1)
+                return pkmn.abilities.some(a => {
+                    multWithA = (abilities[a] && abilities[a][t] != undefined ? abilities[a][t] : 1) * mult
+                    switch (sIndex) {
+                        case 1:
+                            return multWithA == 0
+                        case 2:
+                            return multWithA < 1
+                        case 3:
+                            return multWithA <= 1
+                        case 4:
+                            return multWithA > 1
+                    }
+                }
+
+                )
+            })
+        }
+    })
+
     result = document.getElementById("search-result")
     if (filteredPokemons.length > 0) {
         result.innerHTML = filteredPokemons.map(pkmn => pkmnSearchCard(pkmn)).join(" ")
     } else {
-        result.innerHTML = "<div class='text-center'>No result</div>"
+        result.innerHTML = "<div class='text-center' style='width:100%'>No result</div>"
     }
 }
 
@@ -111,7 +168,6 @@ function pkmnSearchCard(pkmn) {
     return res
 }
 function addPokemonFromSearch(pkmn) {
-    console.log(team)
     lastIndex = team.findIndex(pk => pk.species.name == undefined)
     if (lastIndex == -1) { lastIndex = 5 }
     team[lastIndex].species = pkmn
