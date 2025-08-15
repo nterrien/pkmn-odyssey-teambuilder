@@ -211,6 +211,8 @@ function findPokemonFromInput(name) {
     return ""
 }
 function resetPokemonInfo(index) {
+    input = document.getElementsByName("pokemonName" + index)[0]
+    input.value = ""
     div = document.getElementById("pokemon-" + index)
     div.querySelector(".sprite").innerHTML = ""
     div.querySelector(".ability").innerHTML = ""
