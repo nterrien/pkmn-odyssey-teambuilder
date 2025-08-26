@@ -4,7 +4,9 @@ A teambuilder for [Pokémon Odyssey](https://www.pokecommunity.com/threads/pok%C
 
 Data from https://docs.google.com/spreadsheets/d/1Es1clPMUhEEqZRHW0tgAmvxqSzVXiXmD/edit
 
-The non Etrian Pokémon sprites are sprites from the 5th generation and from [Smogon](https://www.smogon.com/forums/threads/smogon-sprite-project.3647722/) for Pokémon that were not in 5th Generation. Gorochu sprite from https://x.com/Dragonsden95/status/1715418155286188158.
+The non Etrian Pokémon sprites are sprites from the 5th generation and from [Smogon](https://www.smogon.com/forums/threads/smogon-sprite-project.3647722/) for Pokémon that were not in 5th Generation. 
+Farigiraf, Sandy Shocks, Walking Wake, Gouging Fire and Raging Bolt sprites are from [Pokérogue](https://github.com/pagefaultgames/pokerogue).
+Gorochu sprite from https://x.com/Dragonsden95/status/1715418155286188158.
 
 ## Modify
 If you want to edit this tool for another game, you only have to edit files in the data folder, the pokémon list is stored in pokemon.js, and contains the pokemon name, types and abilities. The type chart can be edited in type-chart.js. Ability that changes damage of a type (like Levitate or Dry Skin) can be added or changed in abilities.js.
