@@ -50,6 +50,14 @@ regionList.forEach(a => {
 // Team
 team = [{ species: {}, ability: 0 }, { species: {}, ability: 0 }, { species: {}, ability: 0 }, { species: {}, ability: 0 }, { species: {}, ability: 0 }, { species: {}, ability: 0 }]
 
+// HTML for team
+teamDiv = document.getElementById("team")
+for (let i = 0; i < 6; i++) {
+    var div = '<div class="pokemon-card" id="pokemon-' + i + '"><div class="sprite">' + pokemonIcon("Placeholder") + '</div>Pokémon ' + (i + 1) + ':'
+    div += '<input type="text" name="pokemonName' + i + '" value="" list="pokemon-names" onkeydown="enterDownFunction(event,function (){choosePokemon(' + i + ')})" onfocusout="choosePokemon(' + i + ')">'
+    div += '<div class="ability"></div><div class="types"></div><button onclick="removePokemon(' + i + ')">X</button></div>'
+    teamDiv.innerHTML += div;
+}
 
 // Advanced search
 searchTypes = document.getElementById("search-resist")
@@ -162,7 +170,7 @@ function startAdvancedSearch() {
 function pkmnSearchCard(pkmn) {
     res = "<span class='pkmn-result-card'>" + pokemonIcon(pkmn.name) + "<b class='name'>" + pkmn.name + "</b>"
     res += '<span class="types">' + pkmn.types.map(t => typeIcon(t)).join(" ") + "</span>"
-    res += pkmn.abilities.join("/")
+    res += '<span class="abilities">' + pkmn.abilities.join("&#8203;/&#8203;") + "</span>"
     res += "<button class='btn-add' onclick='addPokemonFromSearch(" + JSON.stringify(pkmn) + ")'>+</button>"
     res += "</span>"
     return res
@@ -210,7 +218,7 @@ function findPokemonFromInput(name) {
     }
     return ""
 }
-function removePokemon(index){
+function removePokemon(index) {
     resetPokemonInfo(index)
     constructTable()
 }
@@ -218,7 +226,7 @@ function resetPokemonInfo(index) {
     input = document.getElementsByName("pokemonName" + index)[0]
     input.value = ""
     div = document.getElementById("pokemon-" + index)
-    div.querySelector(".sprite").innerHTML = ""
+    div.querySelector(".sprite").innerHTML = pokemonIcon("Placeholder")
     div.querySelector(".ability").innerHTML = ""
     div.querySelector(".types").innerHTML = ""
     team[index].species = {}
@@ -285,7 +293,8 @@ function constructTable() {
                     } else {
                         table += 'resist">'
                     }
-                    table += "x" + damageMult + "</span>"
+                    table += "x" + convertDecimalToFraction(damageMult) + "</span>"
+
                 }
             }
             table += "</td>"
@@ -295,6 +304,19 @@ function constructTable() {
     }
     table += "</tbody>"
     document.getElementById("table").innerHTML = table
+}
+
+/** https://www.mathsisfun.com/converting-decimals-fractions.html */
+function convertDecimalToFraction(decimal) {
+    gcd = function (a, b) {
+        if (!b) return a;
+        return gcd(b, a % b);
+    };
+    pgcd = gcd(decimal * 100, 100)
+    if (pgcd == 100) {
+        return decimal
+    }
+    return (decimal * 100 / pgcd) + "&frasl;" + 100 / pgcd
 }
 
 constructTable()

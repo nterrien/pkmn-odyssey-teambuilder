@@ -139,6 +139,10 @@ h2 {
     width: 170px;
 }
 
+.abilities {
+    max-width: 163px
+}
+
 .btn-add {
     margin-left: auto;
 }
@@ -175,6 +179,7 @@ h2 {
 
 select {
     width: 100%;
+    margin-bottom: 3px;
 }
 
 .types {
@@ -421,4 +426,47 @@ button:focus {
 footer {
     text-align: center;
     font-size: 0.8rem;
+}
+
+
+/* For smaller screen */
+
+@media screen and (max-width:700px) {
+
+    .pkmn-result-card {
+        height: 60px;
+    }
+
+    .pkmn-result-card>.abilities {
+        display: none;
+    }
+
+    th>img {
+        width: 36px;
+        height: 36px;
+    }
+
+    select {
+        width: 125px;
+    }
+
+    .pokemon-card {
+        flex-wrap: wrap;
+        min-width: unset;
+        justify-content: center;
+        padding: 5px
+    }
+}
+
+@media screen and (max-width:490px) {
+
+    .pkmn-result-card>.types {
+        display: none;
+    }
+
+    th>img {
+        width: 24px;
+        height: 24px;
+    }
+
 }
