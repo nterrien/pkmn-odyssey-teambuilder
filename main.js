@@ -396,6 +396,7 @@ function exportPaste() {
     if (paste.length > 0) {
         log.innerHTML = "Exported! Don't forget to save your team in a text file."
         document.getElementById("paste-field").value = paste
+        navigator.clipboard.writeText(paste)
     } else {
         log.innerHTML = "Nothing to export! You must select at least one Pokémon."
     }
