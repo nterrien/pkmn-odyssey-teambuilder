@@ -81,105 +81,14 @@ h2 {
     background-color: #f0f0f0
 }
 
-.search {
-    display: flex;
-    justify-content: right;
-    margin-bottom: 15px;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.options {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.hide {
-    display: none;
-}
-
-.type-select {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    align-items: center;
-}
-
-.type-select>select {
-    width: 100px;
-}
-
-#search-result {
-    gap: 5px;
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 10px;
-    background-color: #f0f0f0;
-    padding: 5px;
-    border-radius: 4px;
-    max-height: 500px;
-    overflow-y: scroll;
-}
-
-.pkmn-result-card {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    border: 1px black solid;
-    border-radius: 6px;
-    padding: 5px;
-    background-color: white;
-    flex: 1 1 650px;
-}
-
-.pkmn-result-card>.name {
-    width: 170px;
-}
-
-.abilities {
-    max-width: 163px
-}
-
-.btn-add {
-    margin-left: auto;
-}
-
-.team {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.pokemon-card {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    border-radius: 5px;
-    border: 1px #404040 solid;
-    min-height: 56px;
-    flex: 1 1 calc(50% - 10px);
-    padding-right: 10px;
-    min-width: 618px
-}
-
-.sprite {
-    width: 54px;
-    height: 54px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.ability {
-    width: 131px;
-}
-
 select {
     width: 100%;
-    margin-bottom: 3px;
+    margin-bottom: 1px;
+    height: 26px;
+}
+
+input {
+    height: 22px;
 }
 
 .types {
@@ -189,7 +98,7 @@ select {
 .type-icon {
     display: inline-block;
     width: 66px;
-    margin-bottom: 4px;
+    margin-bottom: 1px;
     background: #dbdbdb;
     background-color: black;
     border: 1px solid #a3a3a3;
@@ -281,6 +190,121 @@ select {
     background-color: #e0dcc9
 }
 
+/* Team */
+.team {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.pokemon-card {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 5px;
+    border: 1px #404040 solid;
+    min-height: 56px;
+    flex: 1 1 calc(50% - 10px);
+    padding-right: 10px;
+    min-width: 618px
+}
+
+.sprite {
+    width: 54px;
+    height: 54px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ability {
+    width: 131px;
+}
+
+
+.hide {
+    display: none;
+}
+
+/* Advanced search */
+
+.search {
+    display: flex;
+    justify-content: right;
+    margin-bottom: 15px;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px
+}
+
+#advanced-search {
+    border: 1px solid #b0b0b0;
+    border-radius: 5px;
+    padding-top: 5px;
+}
+
+.options {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.type-select {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.type-select>select {
+    width: 86px;
+}
+
+/* #search-resist {
+    justify-content: center;
+} */
+
+#search-result {
+    gap: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    background-color: #f0f0f0;
+    padding: 5px;
+    border-radius: 4px;
+    max-height: 250px;
+    overflow-y: scroll;
+}
+
+.pkmn-result-card {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border: 1px black solid;
+    border-radius: 6px;
+    padding: 5px;
+    background-color: white;
+    flex: 1 1 650px;
+}
+
+.pkmn-result-card>.name {
+    width: 170px;
+}
+
+.abilities {
+    max-width: 163px
+}
+
+.btn-add {
+    margin-left: auto;
+}
+
+/* Table */
+
 .table-container {
     margin-top: 20px;
     width: 100%;
@@ -309,6 +333,7 @@ th {
 td {
     width: 50px;
     text-align: center;
+    min-width: 25px;
 }
 
 tr:nth-child(even)>td {
@@ -433,6 +458,20 @@ footer {
 
 @media screen and (max-width:700px) {
 
+    .options {
+        gap: 5px;
+    }
+
+    #type1,
+    #type2,
+    #region {
+        width: 70px
+    }
+
+    .type-select {
+        gap: 5px;
+    }
+
     .pkmn-result-card {
         height: 60px;
     }
@@ -467,6 +506,15 @@ footer {
     th>img {
         width: 24px;
         height: 24px;
+    }
+
+}
+
+@media screen and (max-width:380px) {
+
+    .type-select>select {
+        width: 76px;
+        font-size: 11px;
     }
 
 }
