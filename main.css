@@ -221,7 +221,6 @@ input {
     width: 131px;
 }
 
-
 .hide {
     display: none;
 }
@@ -251,6 +250,7 @@ input {
     margin-bottom: 10px;
     padding-right: 5px;
     padding-left: 5px;
+    justify-content: center;
 }
 
 .type-select {
@@ -263,10 +263,6 @@ input {
 .type-select>select {
     width: 86px;
 }
-
-/* #search-resist {
-    justify-content: center;
-} */
 
 #search-result {
     gap: 5px;
@@ -455,9 +451,13 @@ footer {
 
 
 /* For smaller screen */
+@media screen and (min-width:700px) {
+    .remove {
+        margin-left: auto;
+    }
+}
 
 @media screen and (max-width:700px) {
-
     .options {
         gap: 5px;
     }
@@ -498,7 +498,6 @@ footer {
 }
 
 @media screen and (max-width:490px) {
-
     .pkmn-result-card>.types {
         display: none;
     }
@@ -507,14 +506,11 @@ footer {
         width: 24px;
         height: 24px;
     }
-
 }
 
 @media screen and (max-width:380px) {
-
     .type-select>select {
         width: 76px;
         font-size: 11px;
     }
-
 }

@@ -55,7 +55,7 @@ teamDiv = document.getElementById("team")
 for (let i = 0; i < 6; i++) {
     var div = '<div class="pokemon-card" id="pokemon-' + i + '"><div class="sprite">' + pokemonIcon("Placeholder") + '</div>Pokémon ' + (i + 1) + ':'
     div += '<input type="text" name="pokemonName' + i + '" value="" list="pokemon-names" onkeydown="enterDownFunction(event,function (){choosePokemon(' + i + ')})" onfocusout="choosePokemon(' + i + ')">'
-    div += '<div class="ability"></div><div class="types"></div><button onclick="removePokemon(' + i + ')">X</button></div>'
+    div += '<div class="ability"></div><div class="types"></div><button class="remove" onclick="removePokemon(' + i + ')">X</button></div>'
     teamDiv.innerHTML += div;
 }
 
