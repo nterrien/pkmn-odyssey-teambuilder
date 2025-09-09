@@ -139,9 +139,8 @@ function startAdvancedSearch() {
         sIndex = document.getElementById("select" + t).selectedIndex;
         if (sIndex > 0) {
             filteredPokemons = filteredPokemons.filter(pkmn => {
-                mult = pkmn.types.map(def => effectiveness(t, def)).reduce((x, y) => x * y, 1)
                 return pkmn.abilities.some(a => {
-                    multWithA = (abilities[a] && abilities[a][t] != undefined ? abilities[a][t] : 1) * mult
+                    multWithA = damageMultiplierOnePokemon(a, pkmn, t)
                     switch (sIndex) {
                         case 1:
                             return multWithA == 0
@@ -272,11 +271,7 @@ function constructTable() {
         for (let pkmn of team) {
             table += "<td>"
             if (pkmn.species.name) {
-                abilityMultiplier = 1
-                if (abilities[pkmn.species.abilities[pkmn.ability]] && abilities[pkmn.species.abilities[pkmn.ability]][t] != undefined) {
-                    abilityMultiplier = abilities[pkmn.species.abilities[pkmn.ability]][t]
-                }
-                damageMult = pkmn.species.types.map(def => effectiveness(t, def)).reduce((x, y) => x * y, 1) * abilityMultiplier
+                damageMult = damageMultiplierOnePokemon(pkmn.species.abilities[pkmn.ability], pkmn.species, t)
                 if (damageMult != 1) {
                     if (damageMult > 1) {
                         totalWeak += 1
@@ -284,7 +279,7 @@ function constructTable() {
                         totalResist += 1
                     }
                     table += '<span class="'
-                    if (damageMult >= 4) {
+                    if (damageMult >= 3) {
                         table += 'very-weak">'
                     } else if (damageMult >= 1) {
                         table += 'weak">'
@@ -304,6 +299,18 @@ function constructTable() {
     }
     table += "</tbody>"
     document.getElementById("table").innerHTML = table
+}
+
+function damageMultiplierOnePokemon(ability, pkmn, att) {
+    abilityMultiplier = 1
+    if (abilities[ability] && abilities[ability][att] != undefined) {
+        abilityMultiplier = abilities[ability][att]
+    }
+    damage = abilityMultiplier * pkmn.types.map(def => effectiveness(att, def)).reduce((x, y) => x * y, 1)
+    if (abilities[ability] && abilities[ability]["special"]) {
+        damage = abilities[ability]["special"](damage)
+    }
+    return damage
 }
 
 /** https://www.mathsisfun.com/converting-decimals-fractions.html */
