@@ -39,7 +39,7 @@ abilityList.forEach(a => {
     option.value = a;
     abilityListElement.appendChild(option);
 });
-regionList = [...new Set(pokemons.flatMap(pkmn => pkmn.regional))].sort().filter(r => r)
+regionList = [...new Set(pokemons.flatMap(pkmn => pkmn.region))].sort().filter(r => r)
 regionListElement = document.getElementById("regions-list")
 regionList.forEach(a => {
     var option = document.createElement('option');
@@ -132,7 +132,7 @@ function startAdvancedSearch() {
         (!typeList.includes(type1) || pkmn.types.includes(type1))
         && (!typeList.includes(type2) || pkmn.types.includes(type2))
         && (!abilityList.includes(ability) || pkmn.abilities.includes(ability))
-        && (!regionList.includes(region) || pkmn.regional == region)
+        && (!regionList.includes(region) || pkmn.region == region)
         && (!finalEvo || pkmn.final)
     )
     typeList.forEach(t => {
