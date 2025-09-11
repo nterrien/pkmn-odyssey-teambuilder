@@ -110,23 +110,44 @@ function resetAdvancedSearch() {
     startAdvancedSearch()
 }
 
+function findOrFixStringInList(str, list) {
+    res = list.find(e => e.toLowerCase() == str.toLowerCase().trim())
+    if (!res) {
+        if (str.trim().length > 1) {
+            startingWith = list.filter(e => e.toLowerCase().startsWith(str.trim().toLowerCase()));
+            if (startingWith.length == 1) {
+                return startingWith[0]
+            }
+            if (startingWith.length > 1) {
+                list = startingWith
+            }
+            closest = list.map(e => { return { name: e, distance: levenshtein(str.trim().toLowerCase(), e.toLowerCase()) } }).sort((x, y) => x.distance - y.distance)[0]
+            if (closest.distance < 2 || closest.distance / closest.name.length < 0.3) {
+                return closest.name
+            }
+        }
+        return ""
+    }
+    return res
+}
+
 function startAdvancedSearch() {
     type1 = document.getElementById("type1").value
-    if (!typeList.includes(type1)) {
-        document.getElementById("type1").value = ""
-    }
+    type1 = findOrFixStringInList(type1, typeList)
+    document.getElementById("type1").value = type1
+
     type2 = document.getElementById("type2").value
-    if (!typeList.includes(type2)) {
-        document.getElementById("type2").value = ""
-    }
+    type2 = findOrFixStringInList(type2, typeList)
+    document.getElementById("type2").value = type2
+
     ability = document.getElementById("ability-field").value
-    if (!abilityList.includes(ability)) {
-        document.getElementById("ability-field").value = ""
-    }
+    ability = findOrFixStringInList(ability, abilityList)
+    document.getElementById("ability-field").value = ability
+
     region = document.getElementById("region").value
-    if (!regionList.includes(region)) {
-        document.getElementById("region").value = ""
-    }
+    region = findOrFixStringInList(region, regionList)
+    document.getElementById("region").value = region
+
     finalEvo = document.getElementById("final-evo").checked
     filteredPokemons = pokemons.filter(pkmn =>
         (!typeList.includes(type1) || pkmn.types.includes(type1))
