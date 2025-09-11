@@ -132,6 +132,8 @@ function findOrFixStringInList(str, list) {
 }
 
 function startAdvancedSearch() {
+    searchName = document.getElementById("searchName").value.trim()
+
     type1 = document.getElementById("type1").value
     type1 = findOrFixStringInList(type1, typeList)
     document.getElementById("type1").value = type1
@@ -155,6 +157,7 @@ function startAdvancedSearch() {
         && (!abilityList.includes(ability) || pkmn.abilities.includes(ability))
         && (!regionList.includes(region) || pkmn.region == region)
         && (!finalEvo || pkmn.final)
+        && (searchName.length == 0 || pkmn.name.toLowerCase().startsWith(searchName.toLowerCase()))
     )
     typeList.forEach(t => {
         sIndex = document.getElementById("select" + t).selectedIndex;

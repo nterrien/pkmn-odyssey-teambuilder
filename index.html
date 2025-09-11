@@ -39,6 +39,10 @@
 			<div id="advanced-search" class="hide">
 				<div class="options">
 					<div>
+						Name:
+						<input type="text" id="searchName" value="" onKeyUp="startAdvancedSearch()">
+					</div>
+					<div>
 						Types:
 						<input type="text" id="type1" value="" list="types-list"
 							onkeydown="enterDownFunction(event,function (){startAdvancedSearch()})"
