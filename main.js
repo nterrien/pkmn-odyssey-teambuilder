@@ -352,14 +352,26 @@ function importPaste() {
             }
         } else if (firstLine) {
             firstLine = false
-            // In real pokepaste the format is nickname (species) @ item
-            pkmnName = line.split("@")[0].trim()
+            // In real pokepaste the format is nickname (M/F) (species) @ item
+            pkmnName = line.replace("(M)", "").replace("(F)", "").split("@")[0].trim()
             species = pokemons.find(pkmn => pkmn.name == pkmnName)
             if (!species) {
                 // Nicknames. It can't be done by default because i named Battle Bond pokemon Plusle (Battle Bond). It could be rename Plusle-Battle-Bond
                 if (pkmnName.includes("(")) {
                     pkmnName = pkmnName.split("(")[1].replace(")", "").trim()
                     species = pokemons.find(pkmn => pkmn.name == pkmnName)
+                }
+            }
+            if (!species) {
+                // Try to find anyway. It is a fix for some forms that don't have the same name in showdown
+                candidates = pokemons.filter(pkmn => pkmn.name.startsWith(pkmnName))
+                if (candidates.length == 1) {
+                    species = candidates[0]
+                } else {
+                    candidates = pokemons.filter(pkmn => pkmnName.startsWith(pkmn.name))
+                    if (candidates.length == 1) {
+                        species = candidates[0]
+                    }
                 }
             }
             if (!species) {
